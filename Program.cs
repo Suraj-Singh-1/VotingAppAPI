@@ -1,6 +1,18 @@
 using Microsoft.EntityFrameworkCore;
+using System;
+using VotingAppAPI.Models;
+using VotingAppAPI.Repository.IRepository;
+using VotingAppAPI.Services;
+using VotingAppAPI.Services.IServices;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var connectionString = builder.Configuration.GetConnectionString("MyAppCs");
+builder.Services.AddDbContext<VotingAppDBContext>(options =>
+    options.UseSqlServer(connectionString));
+
+builder.Services.AddTransient<ILoginService,LoginService>();
+builder.Services.AddScoped<IAccountRepository, IAccountRepository>();
 
 // Add services to the container.
 //builder.Services.AddDbContext<Database>(options =>
